@@ -1,6 +1,14 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
-import db from '../utils/connect'
+import db from '../utils/connect';
+import Dev from './devs.model';
+
+export interface ProductType{
+    product_name: string,
+    product_id: string,
+    product_key: string,
+    redirect_url:string,
+}
 
 const Product = db.define('products',{
     
@@ -18,10 +26,6 @@ const Product = db.define('products',{
         type: DataTypes.STRING,
         allowNull: false,
     },
-    permissions: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
     product_photo: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -30,14 +34,15 @@ const Product = db.define('products',{
         type: DataTypes.STRING,
         allowNull: true,
     },
-    developer_id: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
+    // developer_id: {
+    //     type: DataTypes.STRING,
+    //     allowNull: false,
+    // }
 },{
     timestamps : false
   });
 
-Product.sync();
+
+Product.sync().then(()=>console.log("products synced"));
 
 export default Product;

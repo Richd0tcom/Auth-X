@@ -5,6 +5,10 @@ import session from 'express-session'
 import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import RS from 'connect-redis';
+import crypto from 'crypto'
+import { oauths} from "./oauthRoutes"
+
+
 
 const redisClient = createClient({ legacyMode: true})
 
@@ -18,6 +22,8 @@ declare module "express-session" {
     interface SessionData {
       isAuth: boolean,
       user: string,
+      isDev: boolean,
+      devId: string,
     }
   }
 
@@ -45,7 +51,16 @@ app.use(session({
 
 
 routes(app);
+oauths(app);
 
 app.listen(PORT, ()=>{
     console.log('we up')
+    const hash = crypto
+      .createHmac("sha256", process.env.SESSION_SECRET as string)
+      .update(crypto.randomUUID())
+      .digest("base64");
+
+      console.log(hash)
 })
+
+
