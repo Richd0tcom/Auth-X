@@ -79,4 +79,31 @@ const getSingleUser = async (userId: string) => {
     
 }
 
-export { login, register, getSingleUser }
+const updateUserDetails = async(userId: string, name?: string, bio?: string, photo_url?: string) => {
+    const re = await User.findOne({
+        where: {
+            email: userId,
+        }
+    })
+    if (re) {
+        let n;
+        let b;
+        let p;
+        name ? n = (re.getDataValue("name")) ? re.getDataValue("name") : name : null
+        
+        bio ? b = (re.getDataValue("bio")) ? re.getDataValue("bio") : bio : null
+        photo_url ? p = (re.getDataValue("photo_url")) ? re.getDataValue("photo_url") : photo_url : null
+
+        const x = await re.update({
+            name: n,
+            bio: b,
+            photo_url: p,
+        })
+
+        return x
+    } else {
+        return "could not update UserDetails"
+    }
+}
+
+export { login, register, getSingleUser, updateUserDetails }

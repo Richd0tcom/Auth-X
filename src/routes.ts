@@ -1,7 +1,9 @@
 import { Express, Request, Response } from 'express';
 import { login, register} from './services/UserService';
 import DevService from './services/DevService';
-
+import validate from './middleware/validateResource';
+import { registerUserHandler, userLoginHandler, userUpdateHandler } from './controllers/user.controller';
+import { createUserSchema } from './schema/user.schema';
 
 
 
@@ -11,70 +13,13 @@ function routes(app: Express) {
         res.sendStatus(200);
     });
 
-    //register
-    app.post('/register', async (req: Request, res: Response) => {
+    //user routes
+    app.post('/register', validate(createUserSchema), registerUserHandler);
 
-        const email = req.body.email;
-        const password = req.body.password;
-        const name = req.body.name;
+    app.post('/login', userLoginHandler);
 
-        try {
-            const resp = await register(email, name, password)
+    app.put("/updateuser", userUpdateHandler);
 
-            if(typeof resp == "string"){
-                return res.status(400).json({
-                    status: "failed",
-                    data: resp,
-                })
-            }
-
-            return res.status(200).json({
-                status: "success",
-                data: resp,
-            })
-
-        } catch (error) {
-            console.log(error)
-            return res.status(400).json({
-                status: "failed",
-                data: error,
-            })
-        }
-
-    });
-
-    app.post('/login', async (req: Request, res: Response) => {
-
-        const email = req.body.email;
-        const password = req.body.password;
-
-        try {
-
-            const resp = await login(email, password)
-
-            if(typeof resp == "string"){
-                return res.status(400).json({
-                    status: "failed",
-                    data: resp,
-                })
-            }
-            req.session.isAuth = true
-            req.session.user = req.body.email
-            console.log(req.session)
-            return res.status(200).json({
-                status: "success",
-                data: resp,
-            })
-
-        } catch (error) {
-            console.log(error)
-            return res.status(400).json({
-                status: "failed",
-                data: error,
-            })
-        }
-
-    });
     app.post('/logout', async (req: Request, res: Response) => {
 
         try {
@@ -98,9 +43,7 @@ function routes(app: Express) {
 
     })
 
-
     //dev routes
-
     app.post('/dev/register', async (req: Request, res: Response) => {
 
         const email = req.body.email;

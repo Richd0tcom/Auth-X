@@ -5,12 +5,14 @@ import session from 'express-session'
 import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import RS from 'connect-redis';
-import crypto from 'crypto'
-import { oauths} from "./oauthRoutes"
+import { oauths} from "./oauthRoutes";
+import log from "./utils/logger";
 
 
 
-const redisClient = createClient({ legacyMode: true})
+export const redisClient = createClient({ legacyMode: true})
+
+export type RedisClientType = typeof redisClient;
 
 redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
@@ -54,13 +56,8 @@ routes(app);
 oauths(app);
 
 app.listen(PORT, ()=>{
-    console.log('we up')
-    const hash = crypto
-      .createHmac("sha256", process.env.SESSION_SECRET as string)
-      .update(crypto.randomUUID())
-      .digest("base64");
-
-      console.log(hash)
+    log.info('we up')
+    
 })
 
 

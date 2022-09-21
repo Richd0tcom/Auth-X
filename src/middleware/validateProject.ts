@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from "express";
 declare module "express-serve-static-core" {
     interface Request {
         project?: any
-        
     }
 }
 

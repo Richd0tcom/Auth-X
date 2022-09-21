@@ -5,8 +5,6 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 
 import * as oth from "../services/OauthService"
 
-//write middleware to find Oauth code in redis store
-
 
 //write middleware for checking if acces token is valid
 export const isValid = (...scopes: oth.Scope[]) => async (req: Request, res: Response, next: NextFunction) => {

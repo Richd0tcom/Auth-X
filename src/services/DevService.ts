@@ -2,7 +2,7 @@ import PasswordSevice from "./PasswordService";
 import Dev from "../models/devs.model";
 import Product from "../models/product.model";
 import crypto from "crypto"
-import { ostring } from "zod";
+import log from "../utils/logger"
 
 class DevService {
 
@@ -93,10 +93,39 @@ class DevService {
     }
     
     deleteProduct = async function(productId: string, devId: string) {
-        
+        try {
+            const re = await Product.findOne({
+                where: {
+                    product_id: productId,
+                    developer_id: devId
+                }
+            })
+
+            if(re){
+               const s =  await re.destroy()
+               return s
+            }
+
+        } catch (error) {
+            log.error(error)
+        }
     }
-    updateRedirectUrl = async function(url:string) {
-        
+    updateRedirectUrl = async function(productId: string, url:string) {
+        try {
+            const re = await Product.findOne({
+                where: {
+                    product_id: productId,
+                }
+            })
+
+            if(re){
+               const s =  await re.update({redirect_url: url})
+               return s
+            }
+
+        } catch (error) {
+            log.error(error)
+        }
     }
 }
 

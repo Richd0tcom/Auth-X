@@ -1,12 +1,39 @@
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
+
 import { ProductType } from "../models/product.model";
+import { createClient } from "redis";
+import { RedisClientType, redisClient } from "../server";
+
+
+
+import { promisify } from "util";
+
+export class OAuthCodeService {
+
+  constructor(redisClient: RedisClientType) {
+    // this.del = redisClient.del;
+    this.storeOauthCode = this.storeOauthCode.bind(this);
+    this.getOauthCode = this.getOauthCode.bind(this);
+   
+  }
+
+  public storeOauthCode(token: OauthCode) {
+    return redisClient.set(token.value, JSON.stringify(token));
+  }
+
+  public async getOauthCode(tokenValue: string): Promise<OauthCode|null> {
+    const json = await redisClient.get(tokenValue) as string;
+    return JSON.parse(json) as OauthCode;
+  }
+}
 
 export type UserId = string;
 export type Scope = string;
 export type ProjectId = string;
 export type ProjectName = string;
 export type AccessTokenValue = string;
+export type AuthorizationCodeValue = string;
 
 const TTL = 3600
 
@@ -16,8 +43,13 @@ export interface AccessToken {
     createdAt: number;
     projectId: ProjectId
 }
-export interface OAuthCode {
-    value: string
+export interface OauthCode {
+    projectId: ProjectId;
+    userId: UserId;
+    scope: Scope;
+    redirectUrl: string;
+    createdAt: number;
+    value: AuthorizationCodeValue;
 }
 export interface OAuthCodeResponse {
 
@@ -27,12 +59,6 @@ export interface OAuthCodeResponse {
         redirectUrl: string
      
 }
-
-// export interface AccessTokenResponse {
-//     ttlInSeconds: number;
-//     type: "Bearer";
-//     accessToken: AccessTokenValue;
-// }
 
 export interface AccessTokenRequest {
     userId: UserId;
@@ -49,13 +75,6 @@ export const generateAccessToken = function(user: UserId, projectId: ProjectId){
 export const verifyAccessToken = function(token: string){
     return jwt.verify(token,"secret")
 }
-// export const getAccessTokenResponse = (accessToken: AccessTokenValue) => {//modify
-//     return {
-//       ttlInSeconds: TTL,
-//       type: "Bearer",
-//       accessToken
-//     }
-//   }
 
 export const generateOAuthCode = function(projectId: ProjectId, redirectUrl: string, userId: UserId){
     return {
@@ -66,17 +85,6 @@ export const generateOAuthCode = function(projectId: ProjectId, redirectUrl: str
         value: crypto.randomBytes(128).toString("base64")
     } 
 }
-// export const AuthorizationCode = (projectId: ProjectId, redirectUrl: string, userId: UserId) => {
-//     return {
-//       userId,
-//       projectId,
-//       createdAt: new Date().getTime(),
-//       value: crypto.randomBytes(128).toString("hex"),
-//       redirectUrl
-//     }
-//   }
 
-export function verifyOAuthcode(codeValue: any) {
-   
-}
+
 
