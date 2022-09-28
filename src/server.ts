@@ -7,7 +7,7 @@ import { createClient } from 'redis';
 import RS from 'connect-redis';
 import { oauths} from "./oauthRoutes";
 import log from "./utils/logger";
-
+import cors from 'cors';
 
 
 export const redisClient = createClient({ legacyMode: true})
@@ -38,6 +38,9 @@ db.authenticate()
   .then(() => console.log('Database connected...'))
   .catch(err => console.log('Error: ' + err))
 
+  app.use(cors({
+    origin:'*'
+})) 
 // json parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
