@@ -70,9 +70,11 @@ export function oauths(app: Express) {
 
     const { name, id, redirect_url } = req.project;
     const userId = req.session.user;
-
+    if (!req.session.isAuth){
+      return res.redirect("/oauth/login")
+    }
     // const code= oauth.generateOAuthCode(id, redirect_url, userId)
-
+    //this endpoint will contain a simple server rendered html page with the consent form and will make a post request to /validate
     res.end({ name });
   });
 
