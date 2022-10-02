@@ -115,6 +115,10 @@ class DevService {
       log.error(error);
     }
   };
+
+  //TO-DO 
+  // products should have a column that shows the list of users that have signed up.
+  // users should have a column that shows the list of apps they have signed up for.
 }
 
 export default DevService;

@@ -1,6 +1,6 @@
 import { Express, Request, Response } from "express";
 import { getSingleUser, login } from "./services/UserService";
-import { RedisClientType, redisClient } from "./server";
+import { RedisClientType, redisClient } from "../server";
 import * as oauth from "./services/OauthService";
 import { OAuthCodeService } from "./services/OauthService";
 import projectMiddle from "./middleware/validateProject";

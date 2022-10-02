@@ -12,7 +12,7 @@ const projectMiddle = async function (
   res: Response,
   next: NextFunction
 ) {
-  const projectKey = req.query.projectKey || req.body.projectKey;
+  const projectKey = req.query.projectKey;
   const redirectURL = req.query.redirectURL;
   // const scope = req.query.scope;
 

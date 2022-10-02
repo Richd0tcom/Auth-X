@@ -3,7 +3,7 @@ import crypto from "crypto";
 
 import { ProductType } from "../models/product.model";
 import { createClient } from "redis";
-import { RedisClientType, redisClient } from "../server";
+import { RedisClientType, redisClient } from "../../server";
 
 import { promisify } from "util";
 

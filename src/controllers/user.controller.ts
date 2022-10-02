@@ -10,9 +10,9 @@ export async function userLoginHandler(req: Request, res: Response) {
 
     const user = await login(email, password);
     if (typeof user == "string") {
-      return res.status(400).json({
+      return res.status(404).json({
         status: "failed",
-        data: user,
+        msg: "user not found",
       });
     }
     req.session.isAuth = true;
@@ -24,7 +24,7 @@ export async function userLoginHandler(req: Request, res: Response) {
     });
   } catch (e: any) {
     log.error(e);
-    return res.status(400).json({
+    return res.status(500).json({
       status: "failed",
       data: e,
     });
