@@ -1,6 +1,7 @@
-import { Express, Request, Response } from "express";
-import router from "..";
+import express, { Express, Request, Response } from "express";
 import DevService from "../../services/DevService";
+
+const router = express.Router();
 
 router.post("/dev/createproduct", async (req: Request, res: Response) => {
     const devService = new DevService();
@@ -35,3 +36,4 @@ router.post("/dev/createproduct", async (req: Request, res: Response) => {
       });
     }
   });
+module.exports =  router;

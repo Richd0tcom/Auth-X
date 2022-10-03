@@ -1,6 +1,4 @@
-import { Express, Request, Response } from "express";
-import { login, register } from "../../services/UserService";
-import DevService from "../../services/DevService";
+import express, { Express, Request, Response } from "express";
 import validate from "../../middleware/validateResource";
 import {
   registerUserHandler,
@@ -8,7 +6,7 @@ import {
   userUpdateHandler,
 } from "../../controllers/user.controller";
 import { createUserSchema } from "../../schema/user.schema";
-import router from "..";
+const router = express.Router();
 
 router.post("/register", validate(createUserSchema), registerUserHandler);
 router.post("/login", userLoginHandler);
@@ -32,4 +30,6 @@ router.post("/logout", async (req: Request, res: Response) => {
         status: "failed",
       });
     }
-  });
+});
+
+module.exports =  router;

@@ -1,5 +1,5 @@
-import { Express, Request, Response } from "express";
-import { login, register } from "../../services/UserService";
+import express, { Express, Request, Response } from "express";
+
 import DevService from "../../services/DevService";
 import validate from "../../middleware/validateResource";
 import {
@@ -8,7 +8,7 @@ import {
   userUpdateHandler,
 } from "../../controllers/user.controller";
 import { createUserSchema } from "../../schema/user.schema";
-import router from "..";
+const router = express.Router();
 
 router.post("/dev/register", async (req: Request, res: Response) => {
   const email = req.body.email;
@@ -68,3 +68,5 @@ router.post("/dev/login", async (req: Request, res: Response) => {
     });
   }
 });
+
+module.exports = router;
