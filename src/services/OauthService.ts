@@ -2,25 +2,27 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
 import { ProductType } from "../models/product.model";
-import { createClient } from "redis";
 import { RedisClientType, redisClient } from "../app";
 
 import { promisify } from "util";
 
 export class OAuthCodeService {
-  constructor(redisClient: RedisClientType) {
+  constructor() {
     // this.del = redisClient.del;
     this.storeOauthCode = this.storeOauthCode.bind(this);
     this.getOauthCode = this.getOauthCode.bind(this);
   }
 
-  public storeOauthCode(token: OauthCode) {
-    return redisClient.set(token.value, JSON.stringify(token));
+  public async storeOauthCode(token: OauthCode) {
+    return await redisClient.set(token.value, JSON.stringify(token));
   }
 
-  public async getOauthCode(tokenValue: string): Promise<OauthCode | null> {
-    const json = (await redisClient.get(tokenValue)) as string;
-    return JSON.parse(json) as OauthCode;
+  public async getOauthCode(tokenValue: any): Promise<OauthCode | null> {
+      
+      const res = await redisClient.get(tokenValue)
+      
+      const code = JSON.parse(res as string)
+    return code 
   }
 }
 
@@ -73,8 +75,13 @@ export const generateAccessToken = function (
     "secret"
   );
 };
-export const verifyAccessToken = function (token: string) {
-  return jwt.verify(token, "secret");
+export const verifyAccessToken = async function (token: string): Promise<AccessToken | "Invalid signature"> {
+ try {
+  return jwt.verify(token, "secret") as AccessToken;
+ } catch (error) {
+    return "Invalid signature"
+ }
+  
 };
 
 export const generateOAuthCode = function (
@@ -87,6 +94,6 @@ export const generateOAuthCode = function (
     projectId,
     createdAt: new Date().getTime(),
     redirectUrl,
-    value: crypto.randomBytes(128).toString("base64"),
+    value: crypto.randomBytes(128).toString("hex"),
   };
 };

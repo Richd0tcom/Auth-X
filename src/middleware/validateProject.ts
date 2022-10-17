@@ -24,9 +24,9 @@ const projectMiddle = async function (
     });
 
     if (!project) {
-      return new Error("project does not exist");
+      return next(new Error("project does not exist"));
     } else if (project.getDataValue("redirect_url") != redirectURL) {
-      return new Error("redirect_url incorrect mismatch");
+      return next(new Error("redirect_url incorrect mismatch"));
     }
 
     req.project = {

@@ -1,0 +1,61 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>OAuth 2.0 - Consent to Authorize</title>
+  <link rel="stylesheet" type="text/css" href="/css/user-consent.css" />
+</head>
+
+<body>
+
+  <form action="@OAUTH_AUTHORIZE_URI@" method="post">
+    <!--
+  Welcome to Tailwind Play, the official Tailwind CSS playground!
+
+  Everything here works just like it does when you're running Tailwind locally
+  with a real build pipeline. You can customize your config file, use features
+  like `@apply`, or even add third-party plugins.
+
+  Feel free to play with this example if you're just learning, or trash it and
+  start from scratch if you know enough to be dangerous. Have fun!
+-->
+    <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
+      <div class="mb-10">
+        <h1 class="text-center text-xl">Hi <strong> {{AuthX user}},</strong></h1>
+      </div>
+      <div class="px-32">
+        <div class="flex justify-between">
+          <div class="h-32 w-32 rounded-full border border-blue-200"></div>
+          <div class="h-12 w-12 border self-center"></div>
+          <div class="h-32 w-32 rounded-full border border-blue-200"></div>
+        </div>
+        <div class="mt-5">
+
+          <p class="text-center"> {{AuthX project}} would like to access the following information:</p>
+        </div>
+        <div class="mt-5 rounded-lg border border-black p-5">
+          <ul class="flex flex-col gap-y-3 px-5">
+            <li class="list-disc">{{Profile photo}}: Read only</li>
+            <li class="list-disc">{{Full name}}: Read only</li>
+            <li class="list-disc">{{eamil address}}: Read only</li>
+          </ul>
+        </div>
+        <div class="mt-5 flex justify-between">
+          <button class="py-3 px-12 border rounded-lg">Decline</button>
+          <button class="py-3 px-12 border rounded-lg bg-blue-600 text-white">Accept</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    </div>
+
+  </form>
+
+
+</body>
+
+</html>

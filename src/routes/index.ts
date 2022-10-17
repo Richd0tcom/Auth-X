@@ -18,5 +18,5 @@ router.use("/api/v1/product", require("./api/product"));
 
 /*
 /*Oauth2.0 endpoints */
-// router.use("/api/v1/oauth", require("./oauth2.0/oauth"))
+router.use("/api/v1/oauth", require("./oauth2.0/oauth"))
 export default router;

@@ -1,6 +1,6 @@
 import db from "./utils/connect";
 import dotenv from "dotenv";
-import { createClient } from "redis";
+
 import log from "./utils/logger";
 import app from "./app";
 

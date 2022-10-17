@@ -18,7 +18,7 @@ export const isValid =
     const tokenValue = auth.split(" ")[1] as oth.AccessTokenValue;
     const token = (await oth.verifyAccessToken(tokenValue)) as oth.AccessToken;
 
-    if (!token) {
+    if (!token || typeof token == "string") {
       return res.status(404).json({ msg: "could not verify token" });
     }
 
