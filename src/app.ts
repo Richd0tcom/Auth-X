@@ -5,7 +5,6 @@ import Redis from "ioredis";
 import RS from "connect-redis";
 import cors from "cors";
 import router from "./routes"
-import ejs from "ejs"
 import path from "path";
 import log from "./utils/logger";
 

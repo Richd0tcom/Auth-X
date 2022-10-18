@@ -110,6 +110,8 @@ class DevService {
       if (re) {
         const s = await re.update({ redirect_url: url });
         return s;
+      } else {
+        return "could not update product url"
       }
     } catch (error) {
       log.error(error);
@@ -118,7 +120,7 @@ class DevService {
 
   //TO-DO 
   // products should have a column that shows the list of users that have signed up.
-  // users should have a column that shows the list of apps they have signed up for.
+  // users should have a column that shows the list of apps they have signed up for. (UPDATE: can only be done in postgresql)
 }
 
 export default DevService;

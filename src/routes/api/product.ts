@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import { rmSync } from "fs";
 import DevService from "../../services/DevService";
 
 const router = express.Router();
@@ -36,4 +37,21 @@ router.post("/dev/createproduct", async (req: Request, res: Response) => {
       });
     }
   });
+
+  router.post("/dev/updateurl", async (req: Request, res: Response)=>{
+    const devService = new DevService();
+    const url = req.body.redirect_url;
+    const productId = req.body.product_id;
+
+    try {
+      const updateUrl = await devService.updateRedirectUrl(productId, url);
+      if (typeof updateUrl == "string"){
+        return res.status(400).json({msg: "failed to update redirect url"})
+      }
+      return res.status(201).json({msg:"url updated"})
+
+    } catch (errors) {
+      return res.status(500).json({msg :"something went wong"})
+    }
+  })
 module.exports =  router;
