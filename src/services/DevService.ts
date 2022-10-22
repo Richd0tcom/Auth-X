@@ -48,17 +48,10 @@ class DevService {
     const eemail = exists[0].getDataValue("email");
     const dev_id = exists[0].getDataValue("developer_id");
 
-    const projects = await Product.findAll({
-      where: {
-        developer_id: dev_id,
-      },
-    });
-
     return {
       name: name,
       email: eemail,
       dev_id: dev_id,
-      projects: projects,
     };
   }
 
@@ -79,6 +72,7 @@ class DevService {
       return project;
     } catch (error) {
       console.error(error);
+      throw new Error("Could not create project")
     }
   }
 
@@ -117,6 +111,21 @@ class DevService {
       log.error(error);
     }
   };
+
+  async getProducts(devId: string){
+    try {
+      const products = await Product.findAll({
+        where: {
+          developer_id: devId,
+        }
+      });
+  
+      return products
+    } catch (error) {
+      throw new Error("something went wrong while getting products");
+    }
+    
+  }
 
   //TO-DO 
   // products should have a column that shows the list of users that have signed up.

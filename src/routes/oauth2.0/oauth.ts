@@ -23,7 +23,7 @@ router.get(
   }
 );
 router.get('/', async (req, res) => {
-  return res.render("index")
+  return res.render("login")
 })
 
 //Next they fill in their details
@@ -69,11 +69,15 @@ router.post("/login", async (req: Request, res: Response) => {
 // when the users clicks login with oauth we send them here
 router.get("/validate", projectMiddle, async (req: Request, res: Response) => {
   //projectMiddle is a middleware for verifying the project
+    const service = new UserService()
     req.session.project = req.project
     const { name, id, redirect_url } = req.session.project as Project;
+
+    const userId = req.session.user;
+    const user = await service.getSingleUser(userId as string)// use this name to display on the template.
   
  
-  const userId = req.session.user;
+  
   if (!req.session.isAuth) {// if they are not logged in then redirect to the login page
     return res.redirect(`http://localhost:1337/api/v1/oauth/login?projectKey=${"1YvaUlECuHCfFp3PNJNE/S8TWblZ4/w//PcV8fdoCEw="}&redirectURL=${"localhost:1337/api/v1/oauth/"}`);
   }
