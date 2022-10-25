@@ -35,7 +35,7 @@ Dev.hasMany(Product, {
   foreignKey: "developer_id",
 });
 
-Product.belongsTo(Dev)
+// Product.belongsTo(Dev)
 Dev.sync();
 
 export default Dev;

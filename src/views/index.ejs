@@ -10,7 +10,7 @@
 
 <body>
 
-  <form action="@OAUTH_AUTHORIZE_URI@" method="post">
+  <form action="validate" method="post">
     <!--
   Welcome to Tailwind Play, the official Tailwind CSS playground!
 
@@ -24,7 +24,7 @@
 <div class="relative  min-h-screen flex justify-center items-center overflow-hidden bg-gray-50 px-5">
   <div class="flex justify-center flex-col items-center max-w-[650px] bg-white pb-10">
     <div class="mb-10 pt-10 mt-10">
-    <h1 class="text-center text-xl">Hi <strong> <%= name %>,</strong></h1>
+    <h1 class="text-center text-xl">Hi <strong> there,</strong></h1>
     </div>
     <div class="px-6 lg:px-32">
     <div class="flex justify-between">
@@ -34,7 +34,7 @@
     </div>
     <div class="mt-5">
 
-      <p class="text-center"> <%= project.name %> would like to access the following information:</p>
+      <p class="text-center"> <%= project_name %> would like to access the following information:</p>
     </div>
     <div class="mt-5 rounded-lg border border-black p-5">
       <ul class="flex flex-col gap-y-3 px-5">

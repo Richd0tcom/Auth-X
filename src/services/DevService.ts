@@ -60,7 +60,8 @@ class DevService {
     const pk = crypto
       .createHmac("sha256", process.env.SESSION_SECRET as string)
       .update(productId)
-      .digest("base64");
+      .digest("base64url");
+    
     try {
       const project = Product.create({
         product_name: productName,

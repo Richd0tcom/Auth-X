@@ -18,7 +18,7 @@ router.get(
 
     req.session.project = req.project;
 
-    res.status(200).json({msg: "LFG!!"})
+    res.render("login")
     
   }
 );
@@ -50,7 +50,7 @@ router.post("/login", async (req: Request, res: Response) => {
     // const scope = "profile";
     // const redirectUrl = "http://localhost:3000/api/v1/code";
 
-    const url = `http://localhost:1337/api/v1/oauth/validate?projectKey=1YvaUlECuHCfFp3PNJNE/S8TWblZ4/w//PcV8fdoCEw=&redirectURL=localhost:1337/api/v1/oauth/`;
+    const url = `http://localhost:1337/api/v1/oauth/validate?projectKey=1YvaUlECuHCfFp3PNJNE_S8TWblZ4_w__PcV8fdoCEw=&redirectURL=localhost:1337/api/v1/oauth/`;
 
     res.redirect(url); // redirect to the consent page
     // return res.status(200).json({
@@ -69,21 +69,32 @@ router.post("/login", async (req: Request, res: Response) => {
 // when the users clicks login with oauth we send them here
 router.get("/validate", projectMiddle, async (req: Request, res: Response) => {
   //projectMiddle is a middleware for verifying the project
-    const service = new UserService()
+  try {
+     
     req.session.project = req.project
     const { name, id, redirect_url } = req.session.project as Project;
+    const pk = req.query.projectKey
+    if (!req.session.isAuth) {// if they are not logged in then redirect to the login page
+      return res.redirect(`http://localhost:1337/api/v1/oauth/login?projectKey=${pk}&redirectURL=${redirect_url}`);
+    }
+    // const service = new UserService()
+  
 
     const userId = req.session.user;
-    const user = await service.getSingleUser(userId as string)// use this name to display on the template.
+    // const user = await service.getSingleUser(userId as string)// use this name to display on the template.
   
  
   
-  if (!req.session.isAuth) {// if they are not logged in then redirect to the login page
-    return res.redirect(`http://localhost:1337/api/v1/oauth/login?projectKey=${"1YvaUlECuHCfFp3PNJNE/S8TWblZ4/w//PcV8fdoCEw="}&redirectURL=${"localhost:1337/api/v1/oauth/"}`);
-  }
+  
   // const code= oauth.generateOAuthCode(id, redirect_url, userId)
   //this endpoint will contain a simple server rendered html page with the consent form and will make a post request to /validate
-  res.send("Omo");
+  res.render("index", {
+    project_name: name
+  });
+  } catch (error) {
+    console.log("Error at /validate:",error)
+  }
+   
 });
 
 // when the users gives their consent we expect the form to land here
@@ -102,26 +113,34 @@ router.post("/validate", async (req: Request, res: Response) => {
   if (req.session.user === code.userId) {
     // need to make sure the user is who they claim to be
     // return res.redirect(code.redirectUrl + `?code=${code.value}`);
-    console.log(code)
-    console.log(resp)
-    return res.redirect("http://localhost:1337/api/v1/oauth/")
+     console.log(req.session)
+    req.session.save()
+    return res.redirect(`http://127.0.0.1:5173?code=${code.value}`)
   } else{
     res.send("check again o")
   }
 });
 router.get("/token", async (req: Request, res: Response) => {
+
   const service = new OAuthCodeService()
- 
+ try {
   const resp = await service.getOauthCode(req.query.code as string);
   console.log(resp)
   console.log(req.session)
   if (!resp) return res.status(404).end("Code not found");
 
-  if (req.session.user == resp.userId && req.session.project?.id == resp.projectId) {
+  if (resp.userId && resp.projectId) {
     const token = oauth.generateAccessToken(resp.userId, resp.projectId);
     return res.status(200).json({ token: token });
-  } 
-  return res.status(401).json({msg: "sometin wong"})
+  }else{
+    return res.status(401).json({msg: "please login"})
+  }
+ } catch (error) {
+  console.log("I failed here")
+  return res.status(401).json({msg: "sometin wong", err: error})
+ }
+  
+  
 });
 //protected oauth routes
 router.get(
@@ -131,9 +150,16 @@ router.get(
     const userservice = new UserService();
     try {
       const userId = req.session.user as string
+      console.log(userId)
       const data = await userservice.getSingleUser(userId);
-
-      res.status(200).json(data);
+      console.log(data)
+      if (typeof data != "string"){
+        return res.status(200).json({
+          users: data
+        });
+      }
+      return res.status(400).json({msg: "could not find user"})
+      
     } catch (error) {
       console.log(error);
       res.status(500).json({

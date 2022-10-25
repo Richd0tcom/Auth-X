@@ -36,7 +36,7 @@ export type AuthorizationCodeValue = string;
 const TTL = 3600;
 
 export interface AccessToken {
-  userId: UserId;
+  user: UserId;
   tlInSeconds: number;
   createdAt: number;
   projectId: ProjectId;
