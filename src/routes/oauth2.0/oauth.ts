@@ -50,7 +50,7 @@ router.post("/login", async (req: Request, res: Response) => {
     // const scope = "profile";
     // const redirectUrl = "http://localhost:3000/api/v1/code";
 
-    const url = `http://localhost:1337/api/v1/oauth/validate?projectKey=1YvaUlECuHCfFp3PNJNE_S8TWblZ4_w__PcV8fdoCEw=&redirectURL=localhost:1337/api/v1/oauth/`;
+    const url = `http://localhost:1337/api/v1/oauth/validate?projectKey=1YvaUlECuHCfFp3PNJNE_S8TWblZ4_w__PcV8fdoCEw&redirectURL=localhost:1337/api/v1/oauth/`;
 
     res.redirect(url); // redirect to the consent page
     // return res.status(200).json({
