@@ -18,11 +18,10 @@ export class OAuthCodeService {
   }
 
   public async getOauthCode(tokenValue: any): Promise<OauthCode | null> {
-      
-      const res = await redisClient.get(tokenValue)
-      
-      const code = JSON.parse(res as string)
-    return code 
+    const res = await redisClient.get(tokenValue);
+
+    const code = JSON.parse(res as string);
+    return code;
   }
 }
 
@@ -75,13 +74,14 @@ export const generateAccessToken = function (
     "secret"
   );
 };
-export const verifyAccessToken = async function (token: string): Promise<AccessToken | "Invalid signature"> {
- try {
-  return jwt.verify(token, "secret") as AccessToken;
- } catch (error) {
-    return "Invalid signature"
- }
-  
+export const verifyAccessToken = async function (
+  token: string
+): Promise<AccessToken | "Invalid signature"> {
+  try {
+    return jwt.verify(token, "secret") as AccessToken;
+  } catch (error) {
+    return "Invalid signature";
+  }
 };
 
 export const generateOAuthCode = function (

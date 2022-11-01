@@ -10,22 +10,22 @@ export const isValid =
   (...scopes: oth.Scope[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers.authorization;
-    console.log("auth:",auth)
+    console.log("auth:", auth);
 
     if (!auth) {
       return res.status(401).json({ msg: "Missing accessToken" });
     }
-    
+
     const tokenValue = auth.split(" ")[1] as oth.AccessTokenValue;
     const token = (await oth.verifyAccessToken(tokenValue)) as oth.AccessToken;
-    console.log("token",token)
+    console.log("token", token);
 
     if (!token || typeof token == "string") {
       console.log("accss token: ", token);
       return res.status(404).json({ msg: "could not verify token" });
     }
 
-    req.session.user = token.user
+    req.session.user = token.user;
     // if (hasExpired(token))
     //   return res.status(401).json({ msg: "Token expired" });
 

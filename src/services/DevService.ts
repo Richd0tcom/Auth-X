@@ -61,7 +61,7 @@ class DevService {
       .createHmac("sha256", process.env.SESSION_SECRET as string)
       .update(productId)
       .digest("base64url");
-    
+
     try {
       const project = Product.create({
         product_name: productName,
@@ -73,7 +73,7 @@ class DevService {
       return project;
     } catch (error) {
       console.error(error);
-      throw new Error("Could not create project")
+      throw new Error("Could not create project");
     }
   }
 
@@ -106,29 +106,28 @@ class DevService {
         const s = await re.update({ redirect_url: url });
         return s;
       } else {
-        return "could not update product url"
+        return "could not update product url";
       }
     } catch (error) {
       log.error(error);
     }
   };
 
-  async getProducts(devId: string){
+  async getProducts(devId: string) {
     try {
       const products = await Product.findAll({
         where: {
           developer_id: devId,
-        }
+        },
       });
-  
-      return products
+
+      return products;
     } catch (error) {
       throw new Error("something went wrong while getting products");
     }
-    
   }
 
-  //TO-DO 
+  //TO-DO
   // products should have a column that shows the list of users that have signed up.
   // users should have a column that shows the list of apps they have signed up for. (UPDATE: can only be done in postgresql)
 }

@@ -7,7 +7,7 @@ export const createProductSchema = object({
     }),
     redirect_url: string({
       required_error: "redirect_url is required",
-    }).url("Not a valid url")
+    }).url("Not a valid url"),
   }),
 });
 

@@ -22,7 +22,7 @@ const projectMiddle = async function (
         product_key: projectKey,
       },
     });
-    
+
     if (!project) {
       return next(new Error("project does not exist"));
     } else if (project.getDataValue("redirect_url") != redirectURL) {
@@ -39,8 +39,7 @@ const projectMiddle = async function (
     if (error.code) {
       res.status(error.code).send(error);
     } else {
-      res.status(500).send({ message: "Unknown Error",
-    error: error });
+      res.status(500).send({ message: "Unknown Error", error: error });
     }
   }
 };

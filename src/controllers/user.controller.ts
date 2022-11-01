@@ -5,7 +5,7 @@ import UserService from "../services/UserService";
 import log from "../utils/logger";
 
 export async function userLoginHandler(req: Request, res: Response) {
-  const service = new UserService()
+  const service = new UserService();
   try {
     const { email, password } = req.body;
 
@@ -37,7 +37,7 @@ export async function registerUserHandler(
   res: Response
 ) {
   try {
-    const service = new UserService()
+    const service = new UserService();
     const { email, name, password } = req.body;
 
     const user = await service.register(email, name, password);
@@ -64,7 +64,7 @@ export async function registerUserHandler(
 
 export async function userUpdateHandler(req: Request, res: Response) {
   try {
-    const service = new UserService()
+    const service = new UserService();
     const { email, name, bio, photo_url } = req.body;
 
     const user = await service.updateUserDetails(email, name, bio, photo_url);

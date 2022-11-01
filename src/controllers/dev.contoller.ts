@@ -2,12 +2,10 @@ import DevService from "../services/DevService";
 import { Request, Response } from "express";
 import { CreateUserInput } from "../schema/user.schema";
 
-
-
 import log from "../utils/logger";
 
 export async function developerLoginHandler(req: Request, res: Response) {
-    const service = new DevService()
+  const service = new DevService();
   try {
     const { email, password } = req.body;
 
@@ -38,7 +36,7 @@ export async function registerDeveloperHandler(
   req: Request<{}, {}, CreateUserInput["body"]>,
   res: Response
 ) {
-    const service = new DevService()
+  const service = new DevService();
   try {
     const { email, name, password } = req.body;
 
@@ -63,5 +61,3 @@ export async function registerDeveloperHandler(
     });
   }
 }
-
-
