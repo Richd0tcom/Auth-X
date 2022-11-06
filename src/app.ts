@@ -25,17 +25,12 @@ export type Project = {
   redirect_url: string;
 };
 export const redisClient = new Redis();
-console.log(redisClient.status);
+log.debug(redisClient.status);
 
 export type RedisClientType = typeof redisClient;
 
-redisClient.on("error", (err) => console.log("Redis Client Error", err));
+redisClient.on("error", (err) => log.error("Redis Client Error", err));
 redisClient.on("connect", () => log.info("Connected to Redis Server"));
-
-// redisClient
-//   .connect()
-//   .then(() => console.log("Redis Connected"))
-//   .catch((err) => console.log("redis error", err));
 
 const app = express();
 

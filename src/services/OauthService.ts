@@ -4,20 +4,18 @@ import crypto from "crypto";
 import { ProductType } from "../models/product.model";
 import { RedisClientType, redisClient } from "../app";
 
-import { promisify } from "util";
-
-export class OAuthCodeService {
+export class OAuthStoreService {
   constructor() {
     // this.del = redisClient.del;
     this.storeOauthCode = this.storeOauthCode.bind(this);
     this.getOauthCode = this.getOauthCode.bind(this);
   }
 
-  public async storeOauthCode(token: OauthCode) {
+  public async storeOauthCode(token: IOauthCode) {
     return await redisClient.set(token.value, JSON.stringify(token));
   }
 
-  public async getOauthCode(tokenValue: any): Promise<OauthCode | null> {
+  public async getOauthCode(tokenValue: any): Promise<IOauthCode | null> {
     const res = await redisClient.get(tokenValue);
 
     const code = JSON.parse(res as string);
@@ -34,13 +32,13 @@ export type AuthorizationCodeValue = string;
 
 const TTL = 3600;
 
-export interface AccessToken {
+export interface IAccessToken {
   user: UserId;
   tlInSeconds: number;
   createdAt: number;
   projectId: ProjectId;
 }
-export interface OauthCode {
+export interface IOauthCode {
   projectId: ProjectId;
   userId: UserId;
   scope: Scope;
@@ -76,9 +74,9 @@ export const generateAccessToken = function (
 };
 export const verifyAccessToken = async function (
   token: string
-): Promise<AccessToken | "Invalid signature"> {
+): Promise<IAccessToken | "Invalid signature"> {
   try {
-    return jwt.verify(token, "secret") as AccessToken;
+    return jwt.verify(token, "secret") as IAccessToken;
   } catch (error) {
     return "Invalid signature";
   }

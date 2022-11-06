@@ -1,6 +1,6 @@
-import { Sequelize, DataTypes } from "sequelize";
-import bcrypt from "bcrypt";
+import { DataTypes } from "sequelize";
 import db from "../utils/connect";
+import log from "../utils/logger";
 
 const User = db.define(
   "users",
@@ -33,6 +33,6 @@ const User = db.define(
   }
 );
 
-User.sync();
+User.sync().then(() => log.info("users table synced"));
 
 export default User;

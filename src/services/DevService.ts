@@ -13,7 +13,6 @@ class DevService {
         email: reqEmail,
       },
     });
-    console.log("exists", exists);
     if (exists.length > 0) return "User already exists";
 
     const hashedPassword = await PasswordSevice.hash(reqPassword);
@@ -26,7 +25,6 @@ class DevService {
       password: hashedPassword,
       developer_id: dev_id,
     });
-    console.log("new Developer", newDev);
     return newDev;
   }
 

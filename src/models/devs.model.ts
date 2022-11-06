@@ -2,6 +2,7 @@ import { Sequelize, DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import db from "../utils/connect";
 import Product from "./product.model";
+import log from "../utils/logger";
 
 const Dev = db.define(
   "devs",
@@ -36,6 +37,6 @@ Dev.hasMany(Product, {
 });
 
 // Product.belongsTo(Dev)
-Dev.sync();
+Dev.sync().then(() => log.info("developers table synced"));
 
 export default Dev;

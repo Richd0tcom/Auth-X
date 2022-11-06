@@ -18,7 +18,6 @@ export async function developerLoginHandler(req: Request, res: Response) {
     }
     req.session.isDev = true;
     req.session.devId = user.dev_id;
-    console.log(req.session);
     return res.status(200).json({
       status: "success",
       data: user,

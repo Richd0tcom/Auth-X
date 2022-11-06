@@ -11,26 +11,22 @@
 <body>
 
   <form action="validate" method="post">
-    <!--
-  Welcome to Tailwind Play, the official Tailwind CSS playground!
-
-  Everything here works just like it does when you're running Tailwind locally
-  with a real build pipeline. You can customize your config file, use features
-  like `@apply`, or even add third-party plugins.
-
-  Feel free to play with this example if you're just learning, or trash it and
-  start from scratch if you know enough to be dangerous. Have fun!
--->
 <div class="relative  min-h-screen flex justify-center items-center overflow-hidden bg-gray-50 px-5">
   <div class="flex justify-center flex-col items-center max-w-[650px] bg-white pb-10">
     <div class="mb-10 pt-10 mt-10">
-    <h1 class="text-center text-xl">Hi <strong> there,</strong></h1>
+    <h1 class="text-center text-xl">Hi <strong> <%= user_name %>,</strong></h1>
     </div>
     <div class="px-6 lg:px-32">
     <div class="flex justify-between">
-      <div class="h-20 w-20 md:h-32 md:w-32 rounded-full border border-blue-200"></div>
+      <div class="h-20 w-20 md:h-32 md:w-32 rounded-full border border-blue-200">
+        <% if (user_photo) { %>
+          <img src="<%= user_photo %>" alt="profile_picture" class="w-full h-auto">
+        <% } %>
+      </div>
       <div class="h-12 w-12 border self-center"></div>
-      <div class="h-20 w-20 md:h-32 md:w-32 rounded-full border border-blue-200"></div>
+      <div class="h-20 w-20 md:h-32 md:w-32 rounded-full border border-blue-200">
+
+      </div>
     </div>
     <div class="mt-5">
 

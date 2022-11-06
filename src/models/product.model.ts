@@ -1,7 +1,7 @@
-import { Sequelize, DataTypes } from "sequelize";
-import bcrypt from "bcrypt";
+import { DataTypes } from "sequelize";
 import db from "../utils/connect";
-import Dev from "./devs.model";
+
+import log from "../utils/logger";
 
 export interface ProductType {
   product_name: string;
@@ -45,6 +45,6 @@ const Product = db.define(
   }
 );
 
-Product.sync().then(() => console.log("products synced"));
+Product.sync().then(() => log.info("products table synced"));
 
 export default Product;

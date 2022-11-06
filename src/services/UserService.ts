@@ -1,6 +1,8 @@
 import PasswordSevice from "./PasswordService";
 import User from "../models/user.model";
+import Permission from "../models/permissions";
 import { omit } from "lodash";
+import log from "../utils/logger";
 
 class UserService {
   constructor() {}
@@ -14,7 +16,6 @@ class UserService {
         email: reqEmail,
       },
     });
-    console.log("exists", exists);
     if (exists.length > 0) return "User already exists";
 
     const hashedPassword = await PasswordSevice.hash(reqPassword);
@@ -23,8 +24,8 @@ class UserService {
       name: reqName,
       email: reqEmail,
       password: hashedPassword,
+      photo_url: `https://ui-avatars.com/api/?name=${reqName}`,
     });
-    console.log("new user", newUser);
     return omit(newUser.toJSON(), "password");
   };
 
@@ -77,7 +78,7 @@ class UserService {
         photo: photo,
       };
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   };
 
@@ -118,5 +119,21 @@ class UserService {
       return "could not update UserDetails";
     }
   };
+
+  checkPermissions = async (userId: string, product_id: string) => {
+    const res = await Permission.findAll({
+      where: {
+        user_id: userId,
+        product_id: product_id,
+      },
+    });
+    return res.length > 0 ? true : false;
+  };
+  addPermission = async (userId: string, product_id: string) => [
+    await Permission.create({
+      user_id: userId,
+      product_id: product_id,
+    }),
+  ];
 }
 export default UserService;

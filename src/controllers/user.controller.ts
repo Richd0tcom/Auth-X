@@ -18,7 +18,6 @@ export async function userLoginHandler(req: Request, res: Response) {
     }
     req.session.isAuth = true;
     req.session.user = req.body.email;
-    console.log(req.session);
     return res.status(200).json({
       status: "success",
       data: user,

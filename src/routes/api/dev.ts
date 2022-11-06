@@ -8,6 +8,7 @@ import {
   userUpdateHandler,
 } from "../../controllers/user.controller";
 import { createUserSchema } from "../../schema/user.schema";
+import log from "../../utils/logger";
 const router = express.Router();
 
 router.post("/dev/register", async (req: Request, res: Response) => {
@@ -31,7 +32,7 @@ router.post("/dev/register", async (req: Request, res: Response) => {
       data: resp,
     });
   } catch (error) {
-    console.log(error);
+    log.error(error);
     return res.status(400).json({
       status: "failed",
       data: error,
@@ -55,13 +56,13 @@ router.post("/dev/login", async (req: Request, res: Response) => {
     }
     req.session.isDev = true;
     req.session.devId = resp.dev_id;
-    console.log(req.session);
+
     return res.status(200).json({
       status: "success",
       data: resp,
     });
   } catch (error) {
-    console.log(error);
+    log.error(error);
     return res.status(400).json({
       status: "failed something went wong",
       data: error,
