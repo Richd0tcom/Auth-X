@@ -93,7 +93,7 @@ router.get("/validate", projectMiddle, async (req: Request, res: Response) => {
 
     // const code= oauth.generateOAuthCode(id, redirect_url, userId)
     //this endpoint will contain a simple server rendered html page with the consent form and will make a post request to /validate
-    res.render("index", {
+    res.render("consent", {
       project_name: name,
       user_name: meta?.name,
       user_photo: meta?.photo,
