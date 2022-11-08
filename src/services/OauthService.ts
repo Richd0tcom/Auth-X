@@ -69,14 +69,14 @@ export const generateAccessToken = function (
       user,
       projectId,
     },
-    "secret"
+    process.env.JWT_SECRET as string
   );
 };
 export const verifyAccessToken = async function (
   token: string
 ): Promise<IAccessToken | "Invalid signature"> {
   try {
-    return jwt.verify(token, "secret") as IAccessToken;
+    return jwt.verify(token, process.env.JWT_SECRET as string) as IAccessToken;
   } catch (error) {
     return "Invalid signature";
   }

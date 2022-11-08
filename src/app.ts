@@ -24,7 +24,11 @@ export type Project = {
   id: string;
   redirect_url: string;
 };
-export const redisClient = new Redis();
+export const redisClient = new Redis({
+  host: process.env.REDIS_HOST,
+  port: Number(process.env.REDIS_PORT),
+  password: process.env.REDIS_PASSWORD,
+});
 log.debug(redisClient.status);
 
 export type RedisClientType = typeof redisClient;
