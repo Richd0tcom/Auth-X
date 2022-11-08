@@ -5,6 +5,9 @@ import * as oauthService from "../../services/OauthService";
 import projectMiddle from "../../middleware/validateProject";
 import { isValid } from "../../middleware/authenticate";
 import log from "../../utils/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
 const router = express.Router();
 
 const oAuthCodeService = new oauthService.OAuthStoreService();
@@ -43,7 +46,7 @@ router.post("/login", async (req: Request, res: Response) => {
     // const scope = "profile";
     // const redirectUrl = "http://localhost:3000/api/v1/code";
 
-    const url = `http://localhost:1337/api/v1/oauth/validate?projectKey=1YvaUlECuHCfFp3PNJNE_S8TWblZ4_w__PcV8fdoCEw&redirectURL=localhost:1337/api/v1/oauth/`;
+    const url = `${process.env.BASE_API_URL}/api/v1/oauth/validate`
 
     res.redirect(url); // redirect to the consent page
   } catch (error) {
@@ -65,7 +68,7 @@ router.get("/validate", projectMiddle, async (req: Request, res: Response) => {
     if (!req.session.isAuth) {
       // if they are not logged in then redirect to the login page
       return res.redirect(
-        `http://localhost:1337/api/v1/oauth/login?projectKey=${pk}&redirectURL=${redirect_url}`
+        `${process.env.BASE_API_URL}/api/v1/oauth/login?projectKey=${pk}&redirectURL=${redirect_url}`
       );
     }
     const userId = req.session.user as string;
@@ -85,7 +88,7 @@ router.get("/validate", projectMiddle, async (req: Request, res: Response) => {
         // need to make sure the user is who they claim to be
         // return res.redirect(code.redirectUrl + `?code=${code.value}`);
         req.session.save();
-        return res.redirect(`http://127.0.0.1:5173?code=${code.value}`);
+        return res.redirect(`${redirect_url}?code=${code.value}`);
       }
     }
 
@@ -122,7 +125,7 @@ router.post("/validate", async (req: Request, res: Response) => {
     // need to make sure the user is who they claim to be
     // return res.redirect(code.redirectUrl + `?code=${code.value}`);
     req.session.save();
-    return res.redirect(`http://127.0.0.1:5173?code=${code.value}`);
+    return res.redirect(`${redirect_url}?code=${code.value}`);
   } else {
     res.send("check again o");
   }

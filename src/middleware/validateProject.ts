@@ -17,6 +17,8 @@ const projectMiddle = async function (
   // const scope = req.query.scope;
 
   try {
+    if(req.project) next();
+    
     const project = await Product.findOne({
       where: {
         product_key: projectKey,
