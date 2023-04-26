@@ -1,3 +1,3 @@
 # Auth-X
 
-Authentication API
+OAuth Authentication API
